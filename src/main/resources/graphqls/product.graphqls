@@ -1,0 +1,36 @@
+type Product {
+    id: ID!
+    title: String!
+    price: BigDecimal!
+    inventory_count: Long!
+}
+
+type Query {
+    products(filter: FilterList) : [Product]!
+    count: Long!
+}
+
+
+input FilterList {
+    title_contains: String
+    price_gte: BigDecimal
+    price_lte: BigDecimal
+    count_gte: Long
+    count_lte: Long
+}
+
+type PurchasingProductOut {
+    id: ID!
+    quantity: Long!
+    purchased: Boolean
+}
+
+input PurchasingProduct {
+    id: ID!
+    quantity: Long!
+}
+
+type Mutation {
+    purchase(purchasingProducts: [PurchasingProduct]!): [PurchasingProductOut]
+}
+
