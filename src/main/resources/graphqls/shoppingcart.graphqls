@@ -1,6 +1,6 @@
 type ShoppingCart{
     cart_id: ID!
-    user_id: ID
+    customer_id: ID
     items:  [LineProduct]
     total_price: BigDecimal
     item_count: Long
@@ -14,14 +14,25 @@ type LineProduct {
     total_price: BigDecimal
     added_to_cart: Boolean
 }
-extend type Query {
-    shopping_carts: [ShoppingCart]!
+
+type Order {
+    order_id: ID!
+    customer_id: ID
+    purchased_cart: ShoppingCart
+    order_date: String
+    order_time: String
 }
 
+extend type Query {
+    shopping_carts(cart_id: ID): [ShoppingCart]!
+}
+
+
 extend type Mutation {
-    new_cart(user_id: ID): ShoppingCart!
+    new_cart(customer_id: ID): ShoppingCart!
     delete_cart(cart_id: ID!): Boolean!
     add_to_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
     remove_from_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
     update_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
+    purchase_cart(cart_id: ID!): Order!
 }

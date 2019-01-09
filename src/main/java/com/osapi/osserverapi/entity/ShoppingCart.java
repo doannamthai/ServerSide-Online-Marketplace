@@ -10,17 +10,20 @@ import java.util.Map;
 @Entity
 @Table(name="ShoppingCart")
 public class ShoppingCart {
-    @Column(name="user_id")
-    private Long user_id;
+    @Column(name="customer_id")
+    private Long customer_id;
+
     @Column(name="total_price")
     private BigDecimal total_price;
+
     @Column(name="item_count")
     private Long item_count;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "cart_items", joinColumns = @JoinColumn(name = "ShoppingCart"))
     private Map<Long, LineProduct> items = new HashMap<>();
-    @Id
-    @Column(name="cart_id")
+
+    @Id @Column(name="cart_id")
     private Long cart_id;
 
     public ShoppingCart(){ }
@@ -33,12 +36,12 @@ public class ShoppingCart {
         this.cart_id = cart_id;
     }
 
-    public Long getUser_id() {
-        return user_id;
+    public Long getCustomemr_id() {
+        return customer_id;
     }
 
-    public void setUser_id(Long user_id) {
-        this.user_id = user_id;
+    public void setCustomer_id(Long customer_id) {
+        this.customer_id = customer_id;
     }
 
     public BigDecimal getTotal_price() {

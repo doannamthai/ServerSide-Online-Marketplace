@@ -1,12 +1,11 @@
 package com.osapi.osserverapi.service;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
-import com.osapi.osserverapi.entity.LineProduct;
-import com.osapi.osserverapi.entity.Product;
-import com.osapi.osserverapi.entity.PurchasingProduct;
-import com.osapi.osserverapi.entity.ShoppingCart;
+import com.osapi.osserverapi.entity.*;
 import com.osapi.osserverapi.repository.ProductRepository;
 import com.osapi.osserverapi.repository.ShoppingCartRepository;
+import com.osapi.osserverapi.utilities.Utilities;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -27,16 +26,15 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
     /**
      * Create a new cart with the user_id given
      * Automatically generate cart_id
-     * @param user_id
+     * @param customer_id (optional)
      * @return the new generated shopping cart
      */
-    public ShoppingCart new_cart(Long user_id){
+    public ShoppingCart new_cart(Long customer_id){
         ShoppingCart cart = new ShoppingCart();
         // Set the user id for the cart (optional)
-        cart.setUser_id(user_id);
+        cart.setCustomer_id(customer_id);
         // Set the cart id to the current time stamp
         cart.setCart_id(System.currentTimeMillis());
-
         shoppingCartRepository.save(cart);
         return cart;
     }
@@ -109,7 +107,6 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         this.updateAttributes(shoppingCart);
         // Update the shopping cart to the server
         shoppingCartRepository.save(shoppingCart);
-
         return shoppingCart;
     }
 
@@ -186,10 +183,47 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         }
 
         this.updateAttributes(shoppingCart);
-
         // Update the shopping cart repository
         shoppingCartRepository.save(shoppingCart);
         return shoppingCart;
+    }
+
+
+    /**
+     * Update the inventory and return the order
+     * @param cart_id
+     * @return the purchased order
+     */
+    public Order purchase_cart(Long cart_id){
+        Order order = new Order();
+        if (cart_id == null || shoppingCartRepository.findOne(cart_id) == null)
+            return order;
+
+        ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
+
+        for (LineProduct lineProduct : shoppingCart.getItems()){
+            // Remove all items that exceed inventory count
+            if (!lineProduct.getAdded_to_cart())
+                shoppingCart.getMapLineProduct().remove(lineProduct.getItem_id());
+            else {
+                // Find the product in the inventory
+                Product product = productRepository.findOne(lineProduct.getItem_id());
+                // Update the inventory count
+                product.setInventory_count(product.getInventory_count() - lineProduct.getCount());
+                // Save this product to the server
+                productRepository.save(product);
+            }
+        }
+        // Save purchased shopping cart to the order
+        order.setPurchased_cart(shoppingCart);
+        order.setCustomer_id(shoppingCart.getCustomemr_id());
+        order.setOrder_date(Utilities.getCurrentDate());
+        order.setOrder_time(Utilities.getCurrentTime());
+        order.setOrder_id(System.currentTimeMillis());
+
+        // Delete this cart from server
+        shoppingCartRepository.delete(shoppingCart.getCart_id());
+        return order;
     }
 
     /**
@@ -197,6 +231,8 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
      * @param cart
      */
     private void updateAttributes(ShoppingCart cart){
+        if (cart == null)
+            return;
         BigDecimal total_price = new BigDecimal(0);
         Long item_count = Long.valueOf(0);
         for (LineProduct lineProduct : cart.getItems()){
