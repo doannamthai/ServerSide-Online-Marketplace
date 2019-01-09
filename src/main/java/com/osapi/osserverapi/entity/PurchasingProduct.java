@@ -2,23 +2,34 @@ package com.osapi.osserverapi.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name="PurchasingProduct")
 /**
  * PurchasingProduct class
  * When user pays and purchases from the cart
  */
 public class PurchasingProduct {
-    protected Long id;
-    protected Long quantity;
+    @Id
+    @Column(name="item_id")
+    protected Long item_id;
+    @Column(name="count")
+    protected Long count;
+    @Column(name="title")
+    protected String title;
 
+    @JsonProperty("title")
+    public String getTitle(){ return title;}
 
-    @JsonProperty("id")
-    public Long getId() {
-        return id;
+    @JsonProperty("item_id")
+    public Long getItem_id() {
+        return item_id;
     }
 
-    @JsonProperty("quantity")
-    public Long getQuantity() {
-        return quantity;
+    @JsonProperty("count")
+    public Long getCount() {
+        return count;
     }
 
 }

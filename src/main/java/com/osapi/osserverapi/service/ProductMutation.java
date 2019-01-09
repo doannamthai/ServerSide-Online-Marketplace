@@ -11,17 +11,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class Mutation implements GraphQLMutationResolver {
-
+public class ProductMutation implements GraphQLMutationResolver {
     private ProductRepository productRepository;
 
-    public Mutation(ProductRepository productRepository){
+    public ProductMutation(ProductRepository productRepository){
         this.productRepository = productRepository;
     }
 
     /**
      * Purchase a list of items.
-     * If the purchasing item meet the condition then update the product's count
+     * If the purchasing item meets the condition then update the product's count
      * @param purchasingProducts
      * @return the list of purchasing products output
      */
@@ -30,17 +29,19 @@ public class Mutation implements GraphQLMutationResolver {
 
         for (PurchasingProduct purchasingProduct : purchasingProducts){
             // Find the product that needs to be updated
-            Product product = productRepository.findOne(purchasingProduct.getId());
+            Product product = productRepository.findOne(purchasingProduct.getItem_id());
 
             if (product != null){
                 PurchasingProductOut purchasingProductOut = new PurchasingProductOut(purchasingProduct);
+                purchasingProductOut.setPrice(product.getPrice());
+                purchasingProductOut.setTitle(product.getTitle());
                 // If the current purchasing product has positive inventory count
                 // And the quantity after the purchase is not negative
                 // Then set purchasable to choose and update the count
                 if (product.getInventory_count() > 0 &&
-                        product.getInventory_count() - purchasingProduct.getQuantity() >= 0){
+                        product.getInventory_count() - purchasingProduct.getCount() >= 0){
                     purchasingProductOut.setPurchased(true);
-                    product.setInventory_count(product.getInventory_count() - purchasingProduct.getQuantity());
+                    product.setInventory_count(product.getInventory_count() - purchasingProduct.getCount());
                     // Update the current product to repository
                     productRepository.save(product);
                 }

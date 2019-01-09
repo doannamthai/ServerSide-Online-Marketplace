@@ -1,28 +1,28 @@
 package com.osapi.osserverapi.entity;
 
-import io.leangen.graphql.annotations.GraphQLQuery;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Entity
+@Table(name="Product")
 public class Product {
 
     @Id @GeneratedValue
-    @GraphQLQuery(name = "id")
-    private Long id;
-    @GraphQLQuery(name = "title")
+    @Column(name = "item_id")
+    private Long item_id;
+    @Column(name = "title")
     private String title;
-
+    @Column(name = "inventory_count")
     private Long inventory_count;
 
-    @GraphQLQuery(name = "price")
+    @Column(name = "price")
     private BigDecimal price;
 
 
     public Product(Long id, String title, BigDecimal price, Long inventory_count){
         this.title = title;
-        this.id = id;
+        this.item_id = id;
         this.price = price;
         this.inventory_count = inventory_count;
     }
@@ -37,12 +37,12 @@ public class Product {
         this.title = title;
     }
 
-    public Long getId() {
-        return id;
+    public Long getItem_id() {
+        return item_id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setItem_id(Long item_id) {
+        this.item_id = item_id;
     }
 
     public BigDecimal getPrice() {

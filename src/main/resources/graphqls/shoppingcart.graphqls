@@ -1,0 +1,27 @@
+type ShoppingCart{
+    cart_id: ID!
+    user_id: ID
+    items:  [LineProduct]
+    total_price: BigDecimal
+    item_count: Long
+}
+
+type LineProduct {
+    item_id: ID!
+    title: String
+    count: Long
+    price: BigDecimal
+    total_price: BigDecimal
+    added_to_cart: Boolean
+}
+extend type Query {
+    shopping_carts: [ShoppingCart]!
+}
+
+extend type Mutation {
+    new_cart(user_id: ID): ShoppingCart!
+    delete_cart(cart_id: ID!): Boolean!
+    add_to_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
+    remove_from_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
+    update_cart(purchasing_products: [PurchasingProduct]!, cart_id: ID!): ShoppingCart!
+}

@@ -1,15 +1,9 @@
 type Product {
-    id: ID!
+    item_id: ID!
     title: String!
     price: BigDecimal!
     inventory_count: Long!
 }
-
-type Query {
-    products(filter: FilterList) : [Product]!
-    count: Long!
-}
-
 
 input FilterList {
     title_contains: String
@@ -20,17 +14,24 @@ input FilterList {
 }
 
 type PurchasingProductOut {
-    id: ID!
-    quantity: Long!
+    item_id: ID!
+    count: Long
+    title: String
+    price: BigDecimal
     purchased: Boolean
 }
 
 input PurchasingProduct {
-    id: ID!
-    quantity: Long!
+    item_id: ID!
+    count: Long
+    title: String
 }
 
+type Query {
+    products(filter: FilterList) : [Product]!
+    count: Long!
+}
 type Mutation {
-    purchase(purchasingProducts: [PurchasingProduct]!): [PurchasingProductOut]
+    purchase(purchasing_products: [PurchasingProduct]!): [PurchasingProductOut]
 }
 
