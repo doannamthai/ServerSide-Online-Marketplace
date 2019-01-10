@@ -19,6 +19,7 @@ You have 3 ways to test or run this project:
  ### Product
  Includes 2 queries:
   - `find_products(filter: FilterList*): ItemsData` returns the filtered list of products with the count from the database.
+  
   - `find_product_by_id(item_id: ID): Product` returns the product associated with the given `item_id`. It throws `ProductNotFoundException` if there is no such product.
   
  ### Shopping Cart
@@ -38,4 +39,55 @@ You have 3 ways to test or run this project:
   
   - `purchase_cart(cart_id: ID): Order` updates the `inventory_count` of the product in the shopping cart, only processes any item that has `added_to_cart` attribute is `true`. It returns the created `Order`. It throws `CartNotFoundException` if there is no such cart.
   
-  
+## Definition of models
+#### Product
+ - Type: `Output`
+ - `item_id : Long`: The id of the item.
+ - `title: String`: The title of the item.
+ - `price: BigDecimal`: The price of the item.
+ - `inventory_count: Long`: The count of the item.
+ 
+#### FilterList
+ - Type: `Input`
+ - `title_contains: String*`: The title that contains an user-defined string.
+ - `price_gte: BigDecimal*`: The price that is greater than or equal to.
+ - `price_lte: BigDecimal*`: The price that is less than or equal to. 
+ - `count_gte: Long*`: The inventory count that is greater than or equal to.
+ - `count_lte: Long*`: The inventory count that is less than or equal to.
+ 
+#### PurchasingProduct
+ - Type: `Input`
+ - `item_id: ID`: The id of the purchasing item.
+ - `count: Long`: The count of the purchasing item.
+ - `title: String*`: The title of the purchasing item.
+ 
+#### ItemsData
+ - Type: `Output`
+ - `products: [Product]`: The list of products.
+ - `count: Long`: The number of items in the list.
+ 
+#### ShoppingCart
+ - Type: `Output`
+ - `cart_id: ID`: The id of the shopping cart.
+ - `customer_id: ID`: The id of customer belongs to this shopping cart.
+ - `items:  [LineProduct]`: The list of line items.
+ - `total_price: BigDecimal`: The total price of all items in the cart.
+ - `item_count: Long`: The number of distinguishable items in the cart.
+ 
+#### LineProduct
+ - Type: `Output`
+ - `item_id: ID`: The id of the line item.
+ - `title: String`: The title of the line item.
+ - `count: Long`: The count of the line item.
+ - `price: BigDecimal`: The price of the line item.
+ - `total_price: BigDecimal`: The total price (count* price) of the line item.
+ - `added_to_cart: Boolean`: The boolean atribute indicates whether the item has been added to cart.
+ 
+#### Order 
+ - Type: `Output`
+ - `order_id: ID`: The id of this order.
+ - `customer_id: ID`: The customer's id belongs to this order (if it has one).
+ - `purchased_cart: ShoppingCart`: The shopping cart that has been purchased.
+ - `order_date: String`: The date the order is placed.
+ - `order_time: String`: The time the order is placed.
+
