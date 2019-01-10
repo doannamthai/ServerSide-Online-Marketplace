@@ -8,6 +8,7 @@ Language and frameworks used in the project:
 - Spring Boot
 
 (The page might take long time to load (1-2 minutes))
+
 Demo: [GraphiQL on Heroku](https://serverside-os-api.herokuapp.com/graphiql) - A graphical interactive in-browser IDE for GraphQL
 ## Getting Started
 You have 3 ways to test or run this project:
