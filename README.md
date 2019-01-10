@@ -16,8 +16,8 @@ You have 3 ways to test or run this project:
  
  Some examples to test the API:
  
- 1. [List all products and display the count](#list-all-products-and-display-the-count)
- 2. [List only available products](#list-only-available-products)
+ 1. [List all products and display the count](./README.md#list-all-products-and-display-the-count)
+ 2. [List only available products](./README.md#list-only-available-products)
 ## Entities
  *(\* indicates optional fields)*
  ### Product
