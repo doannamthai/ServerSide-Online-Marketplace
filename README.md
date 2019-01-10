@@ -26,7 +26,7 @@ You have 3 ways to test or run this project:
   2. Create a new shopping cart.
   3. Add the item with the count to the shopping cart.
   4. Update item's count if it is necessary.
-  5. Purchase the cart and enjoy!.
+  5. Purchase the cart and enjoy!
  
 ## Entities
  *(\* indicates optional fields)*
