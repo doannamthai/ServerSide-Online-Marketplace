@@ -27,7 +27,15 @@ You have 3 ways to test or run this project:
   - `shopping_carts(cart_id: ID*): [ShoppingCart]` returns the shopping cart associated with the given cart_id or all the carts if `cart_id` has not been declared.
   #### Mutation
   - `new_cart(customer_id: ID*): ShoppingCart` creates a new shopping cart with the given `customer_id` and returns the new `ShoppingCart`.
+  
   - `delete_cart(cart_id: ID): Boolean` deletes the shopping cart that has the given `cart_id` and returns true if the cart has been deleted. It throws `CartNotFoundException` if there is no such cart.
+  
   - `add_to_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart` takes a list of `PurchasingProduct` and the `cart_id` as parameters, adds the given list of products to the shopping cart and returns the new updated cart. If the amount of an item exceeds the `inventory_count`, the `added_to_cart` property of that item is set to `false` and the shopping cart will **not** count the item. It throws `CartNotFoundException` if there is no such cart. 
+  
   - `remove_from_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart `takes a list of `PurchasingProduct` and the `cart_id` as parameters, removes all the items in the given list from shopping cart and returns the new updated cart. It throws `CartNotFoundException` if there is no such cart or throws `CartIsEmptyException` if the cart is empty. 
+  
+  - `update_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart` takes a list of `PurchasingProduct` and the `cart_id` as parameters, updates all the `count` of items in the shopping cart to the new `count` of items in the given list (as long as they match the `item_id`) and returns the the new updated cart. It throws `CartNotFoundException` if there is no such cart.
+  
+  - `purchase_cart(cart_id: ID): Order` updates the `inventory_count` of the product in the shopping cart, only processes any item that has `added_to_cart` attribute is `true`. It returns the created `Order`. It throws `CartNotFoundException` if there is no such cart.
+  
   
