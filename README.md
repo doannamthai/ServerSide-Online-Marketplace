@@ -47,7 +47,7 @@ You have 3 ways to test or run this project:
   
   - `add_to_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart` takes a list of `PurchasingProduct` and the `cart_id` as parameters, adds the given list of products to the shopping cart and returns the new updated cart. If the `item_id` is already in the shopping cart, increase the count or insert a new item, otherwise. If the amount of any item exceeds the `inventory_count`, the `added_to_cart` property of that item is set to `false` and the shopping cart will **not** count the item. It throws `CartNotFoundException` if there is no such cart. 
   
-  - `remove_from_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart `takes a list of `PurchasingProduct` and the `cart_id` as parameters, removes all the items in the given list from shopping cart and returns the new updated cart. It throws `CartNotFoundException` if there is no such cart or throws `CartIsEmptyException` if the cart is empty. 
+  - `remove_from_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart` takes a list of `PurchasingProduct` and the `cart_id` as parameters, removes all the items in the given list from shopping cart and returns the new updated cart. It throws `CartNotFoundException` if there is no such cart or throws `CartIsEmptyException` if the cart is empty. 
   
   - `update_cart(purchasing_products: [PurchasingProduct], cart_id: ID): ShoppingCart` takes a list of `PurchasingProduct` and the `cart_id` as parameters, updates all the `count` of items in the shopping cart to the new `count` of items in the given list (as long as they match the `item_id`) and returns the the new updated cart. It throws `CartNotFoundException` if there is no such cart.
   
