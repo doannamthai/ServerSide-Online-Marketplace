@@ -7,7 +7,6 @@ import com.osapi.osserverapi.exception.CartNotFoundException;
 import com.osapi.osserverapi.repository.ProductRepository;
 import com.osapi.osserverapi.repository.ShoppingCartRepository;
 import com.osapi.osserverapi.utilities.Utilities;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
