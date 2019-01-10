@@ -27,9 +27,14 @@ input PurchasingProduct {
     title: String
 }
 
-type Query {
-    products(filter: FilterList) : [Product]!
+type ItemsData {
     count: Long!
+    products: [Product]!
+}
+
+type Query {
+    find_products(filter: FilterList) : ItemsData!
+    find_product_by_id(item_id: ID!): Product!
 }
 type Mutation {
     purchase(purchasing_products: [PurchasingProduct]!): [PurchasingProductOut]

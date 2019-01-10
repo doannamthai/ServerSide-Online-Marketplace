@@ -10,16 +10,42 @@ import java.util.List;
 
 public class FilterService {
 
-    public static  List<Product> filter(FilterList filter, ProductRepository productRepository){
+    private Long count;
+
+    private FilterList filter;
+    private ProductRepository productRepository;
+
+    public FilterService(FilterList filter, ProductRepository productRepository){
+        this.filter = filter;
+        this.productRepository = productRepository;
+        this.count = productRepository.count();
+    }
+
+    public FilterService(ProductRepository productRepository){
+        this.productRepository = productRepository;
+    }
+
+    public void setFilter(FilterList filterList){
+        this.filter = filterList;
+    }
+
+    public FilterList getFilter(){
+        return filter;
+    }
+
+
+    public List<Product> filter(){
         // Get the list of products
         List<Product> products = productRepository.findAll();
         // Filter by conditions
         return buildFilter(filter, products);
     }
 
-    private static List<Product> buildFilter(FilterList filter, List<Product> products){
-        if (filter == null)
+    private List<Product> buildFilter(FilterList filter, List<Product> products){
+        if (filter == null){
+            count = productRepository.count();
             return products;
+        }
         String titleContains = filter.getTitleContains();
         BigDecimal priceLte = filter.getPriceLte();
         BigDecimal priceGte = filter.getPriceGte();
@@ -34,6 +60,7 @@ public class FilterService {
         boolean filterCountGte = countGte == null ? false : true;
 
         List<Product> filteredList = new ArrayList<>();
+
         for (Product product : products){
             if (filterTitle){
                 if (!product.getTitle().contains(titleContains))
@@ -65,7 +92,12 @@ public class FilterService {
             filteredList.add(product);
 
         }
+        count = Long.valueOf(filteredList.size());
         return filteredList;
+    }
+
+    public Long getCount(){
+        return count;
     }
 
 }

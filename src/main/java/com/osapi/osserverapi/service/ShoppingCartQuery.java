@@ -2,9 +2,9 @@ package com.osapi.osserverapi.service;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
 import com.osapi.osserverapi.entity.ShoppingCart;
+import com.osapi.osserverapi.exception.CartNotFoundException;
 import com.osapi.osserverapi.repository.ShoppingCartRepository;
 import org.springframework.stereotype.Component;
-
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,8 +28,13 @@ public class ShoppingCartQuery implements GraphQLQueryResolver {
      */
     public List<ShoppingCart> shopping_carts(Long cart_id){
         if (cart_id == null)
-            return shopping_carts();
-        return Arrays.asList(shoppingCartRepository.findOne(cart_id));
+            return shoppingCartRepository.findAll();
+
+        ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
+
+        if (shoppingCart == null)
+            throw new CartNotFoundException("There is no such shopping cart with given cart_id", cart_id);
+        return Arrays.asList(shoppingCart);
     }
 
 }

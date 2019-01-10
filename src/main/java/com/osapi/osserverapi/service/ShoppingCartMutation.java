@@ -2,6 +2,8 @@ package com.osapi.osserverapi.service;
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver;
 import com.osapi.osserverapi.entity.*;
+import com.osapi.osserverapi.exception.CartEmptyException;
+import com.osapi.osserverapi.exception.CartNotFoundException;
 import com.osapi.osserverapi.repository.ProductRepository;
 import com.osapi.osserverapi.repository.ShoppingCartRepository;
 import com.osapi.osserverapi.utilities.Utilities;
@@ -45,10 +47,10 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
      * @return true if the cart has been deleted, false otherwise
      */
     public Boolean delete_cart(Long cart_id){
-        // If there is no cart's id, then return false
-        // Or if there is no such cart_id
+        // If there is no cart's id
+        // Or if there is no such cart_id, throw Exception
         if (cart_id == null || !shoppingCartRepository.exists(cart_id))
-            return false;
+            throw new CartNotFoundException("There is no such shopping cart with given cart_id", cart_id);
         // Otherwise, perform deleting operation and return true
         shoppingCartRepository.delete(cart_id);
         return true;
@@ -61,12 +63,11 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
      * @return the updated shopping cart
      */
     public ShoppingCart add_to_cart(List<PurchasingProduct> purchasingProducts, Long cart_id){
-
         // Get the cart associated with the id given
         ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
         // If cart is not found, return
         if (shoppingCart == null)
-            return null;
+            throw new CartNotFoundException("There is no such shopping cart with given cart_id", cart_id);
         // Otherwise add products to the shopping cart
         if (shoppingCart.getItems() == null)
             shoppingCart.setItems(new HashMap<>());
@@ -77,6 +78,7 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
             // If there is no such product, skip
             if (product == null)
                 continue;
+
             LineProduct lineProduct;
 
             Long count = purchasingProduct.getCount();
@@ -120,9 +122,13 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         // Get the cart associated with the given id
         ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
         // If cart is not found,
-        // Or the cart is empty, then return
-        if (shoppingCart == null || shoppingCart.getItems() == null || shoppingCart.getItems().isEmpty())
-            return shoppingCart;
+        // Or the cart is empty, throw Exceptions
+        if (shoppingCart == null)
+            throw new CartNotFoundException("There is no such shopping cart with given cart_id", cart_id);
+
+        if(shoppingCart.getItems() == null || shoppingCart.getItems().isEmpty())
+            throw new CartEmptyException("Cart is empty", cart_id);
+
         // Otherwise remove products from the shopping cart
         for (PurchasingProduct purchasingProduct: purchasingProducts){
             if (!shoppingCart.getMapLineProduct().containsKey(purchasingProduct.getItem_id()))
@@ -146,9 +152,12 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         // Get the cart associated with the given id
         ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
         // If cart is not found,
-        // Or the cart, or the purchasing list is empty, then return
-        if (shoppingCart == null || shoppingCart.getItems() == null || shoppingCart.getItems().isEmpty() || purchasingProducts.isEmpty())
-            return shoppingCart;
+        // Or the cart is empty, throw Exceptions
+        if (shoppingCart == null)
+            throw new CartNotFoundException("There is no such shopping cart with given cart_id", cart_id);
+
+        if(shoppingCart.getItems() == null || shoppingCart.getItems().isEmpty())
+            throw new CartEmptyException("Cart is empty", cart_id);
 
         // Otherwise update the item count to the current item count of the shopping cart
         for (PurchasingProduct purchasingProduct : purchasingProducts){
@@ -196,8 +205,10 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
      */
     public Order purchase_cart(Long cart_id){
         Order order = new Order();
+        // If cart is not found,
+        // Or the cart is empty, throw Exceptions
         if (cart_id == null || shoppingCartRepository.findOne(cart_id) == null)
-            return order;
+            throw new CartNotFoundException("Cannot create order. There is no such shopping cart with given cart_id", cart_id);
 
         ShoppingCart shoppingCart = shoppingCartRepository.findOne(cart_id);
 
