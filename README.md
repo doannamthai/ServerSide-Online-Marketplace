@@ -1,6 +1,6 @@
 
 # Web API For Online Marketplace 
-A basic serverside web api for online marketplace
+> A basic serverside web api for online marketplace
 
 Language and frameworks used in the project:
 - Java 10
@@ -13,3 +13,9 @@ You have 3 ways to test or run this project:
  1. Use the GraphiQL IDE installed on demo's link,
  2. Clone this repository and run locally. It opens port `8000` on localhost,
  3. Or by using `HTTP Requests` to server https://serverside-os-api.herokuapp.com/graphql
+ 
+### Entities
+ #### Product
+ Includes 2 Queries:
+  1. `find_products(filter: FilerList*): ItemsData` returns the filtered list of products in the database
+  2. `find_product_by_id(item_id: ID): Product` returns the product that has the given `item_id`
