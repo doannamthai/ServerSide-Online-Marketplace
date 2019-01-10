@@ -18,14 +18,14 @@ You have 3 ways to test or run this project:
  *(\* indicates optional fields)*
  ### Product
  Includes 2 queries:
-  - `find_products(filter: FilterList*): ItemsData` returns the filtered list of products with the count from the database.
+  - `find_products(filter: FilterList*): ItemsData` returns the filtered list of products with the count from the database or returns all the products if the filter is not declared.
   
   - `find_product_by_id(item_id: ID): Product` returns the product associated with the given `item_id`. It throws `ProductNotFoundException` if there is no such product.
   
  ### Shopping Cart
  Includes 1 query and 6 mutations
   #### Query
-  - `shopping_carts(cart_id: ID*): [ShoppingCart]` returns the shopping cart associated with the given cart_id or all the carts if `cart_id` has not been declared.
+  - `shopping_carts(cart_id: ID*): [ShoppingCart]` returns the shopping cart associated with the given cart_id or all the carts if `cart_id` is not declared.
   #### Mutation
   - `new_cart(customer_id: ID*): ShoppingCart` creates a new shopping cart with the given `customer_id` and returns the new `ShoppingCart`.
   
