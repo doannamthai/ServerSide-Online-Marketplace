@@ -18,7 +18,15 @@ You have 3 ways to test or run this project:
  1. [List all products and display the count](#list-all-products-and-display-the-count)
  2. [List only available products](#list-only-available-products)
  3. [Create a new cart](#create-a-new-cart)
- 4. [Add items to the shopping cart](#add-items-to-shopping-cart)
+ 4. [Add items to the shopping cart](#add-items-to-the-exist-shopping-cart)
+ 
+ ## How to buy items ?
+ 
+  1. Fetch products and remember the id of the item you like.
+  2. Create a new shopping cart.
+  3. Add the item with the count to the shopping cart.
+  4. Update item's count if it is necessary.
+  5. Purchase the cart and enjoy!.
  
 ## Entities
  *(\* indicates optional fields)*
