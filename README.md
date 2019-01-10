@@ -14,6 +14,10 @@ You have 3 ways to test or run this project:
  2. Clone this repository and run locally. It opens port `8000` on localhost,
  3. Or by using `HTTP Requests` to server https://serverside-os-api.herokuapp.com/graphql.
  
+ Some examples to test the API:
+ 
+ 1. [List all products and display the count](#list-all-products-and-display-the-count)
+ 2. [List only available products](#list-only-available-products)
 ## Entities
  *(\* indicates optional fields)*
  ### Product
@@ -93,7 +97,9 @@ You have 3 ways to test or run this project:
 
 ## Examples
 
- For convinience, all examples for `HTTP Requests` will be demonstrated by using `POST` method to server `https://serverside-os-api.herokuapp.com/graphql` or your localhost (if you have already cloned this repository) on `localhost:8000/graphql`
+ For convenience, all examples for `HTTP Requests` will be demonstrated using `POST` method to server `https://serverside-os-api.herokuapp.com/graphql` or your localhost (if you have already cloned this repository) on `localhost:8000/graphql`
+ 
+ Note that, for output type models, you can display one or many attributes by listing the name of attribute. 
  
  #### List all products and display the count: 
  #### On GraphiQL IDE:
@@ -122,7 +128,6 @@ You have 3 ways to test or run this project:
  ```
  query{
     find_products(filter: {count_gte: 1}){
-    count
     products{
       item_id
       title
@@ -136,7 +141,59 @@ You have 3 ways to test or run this project:
 
 ```
 {
-  "query": "{find_products(filter: {count_gte: 1}) { count products { item_id title inventory_count price } } }"
+  "query": "{find_products(filter: {count_gte: 1}) { products { item_id title inventory_count price } } }"
+}
+ ```
+ 
+ #### Create a new cart
+
+ #### On GraphiQL IDE:
+ ```
+mutation {
+  new_cart(customer_id: 2){
+    cart_id
+    customer_id
+    item_count
+    items {
+      item_id
+      title
+    }
+    item_count
+  }
+}
+ ```
+#### HTTP Requests
+
+```
+{
+  "mutation": "{new_cart(customer_id: 2) { cart_id customer_id items { item_id title} item_count } }"
+}
+ ```
+ 
+ #### Add items to shopping cart
+
+ #### On GraphiQL IDE:
+ ```
+mutation {
+  add_to_cart(purchasing_products: {item_id: 1, count: 4}, cart_id: 2){
+   	cart_id
+    items {
+      item_id
+      title
+    	count
+      price
+      total_price
+    }
+    item_count
+    total_price
+  }
+}
+ ```
+#### HTTP Requests
+
+```
+{
+  "mutation": "{add_to_cart(purchasing_products: {item_id: 1, count: 4}, cart_id: 2) { cart_id customer_id items { item_id title} item_count } }"
 }
  ```
 
