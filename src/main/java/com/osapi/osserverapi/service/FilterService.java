@@ -8,6 +8,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * FilterService class, helps filter data
+ */
 public class FilterService {
 
     private Long count;
@@ -41,6 +44,12 @@ public class FilterService {
         return buildFilter(filter, products);
     }
 
+    /**
+     * Filter the list of products with given properties
+     * @param filter
+     * @param products
+     * @return the filtered list
+     */
     private List<Product> buildFilter(FilterList filter, List<Product> products){
         if (filter == null){
             count = productRepository.count();

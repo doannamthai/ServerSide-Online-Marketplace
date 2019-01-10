@@ -27,23 +27,35 @@ public class OsServerApiApplication {
 		SpringApplication.run(OsServerApiApplication.class, args);
 	}
 
+	/**
+	 * Test products
+	 * @param productRepository
+	 * @param shoppingCartRepository
+	 * @return new runner
+	 */
 	@Bean
 	public CommandLineRunner demo(ProductRepository productRepository, ShoppingCartRepository shoppingCartRepository) {
 		return (args) -> {
-			for (int i = 0; i <= 10; i++){
-				BigDecimal price = new BigDecimal(i*100+50);
-				long count = i+3;
-				long id = i+1;
-				Product product = new Product(id, "Thai Doan", price, count);
-				productRepository.save(product);
-			}
-			ShoppingCart shoppingCart = new ShoppingCart();
-			Long id = Long.valueOf(1);
-			shoppingCart.setCart_id(id);
-			shoppingCartRepository.save(shoppingCart);
+			long id = 0;
+			Product product1 = new Product(id + 1, "iPhone 11S", new BigDecimal(1500), (long) 10);
+			Product product2 = new Product(id + 2, "Dell XPS 15", new BigDecimal(1200), (long) 20);
+			Product product3 = new Product(id + 3, "Macbook Pro", new BigDecimal(1800), (long) 12);
+			Product product4 = new Product(id + 4, "Samsung Galaxy S7", new BigDecimal(800), (long) 0);
+			Product product5 = new Product(id + 5, "Bitcoin", new BigDecimal(4000), (long) 500);
+			Product product6 = new Product(id + 6, "Hello World!", new BigDecimal(50), (long) 1000);
+			productRepository.save(product1);
+			productRepository.save(product2);
+			productRepository.save(product3);
+			productRepository.save(product4);
+			productRepository.save(product5);
+			productRepository.save(product6);
 		};
 	}
 
+	/**
+	 * Customize error handler
+	 * @return new error handler
+	 */
 	@Bean
 	public GraphQLErrorHandler errorHandler() {
 		return new GraphQLErrorHandler() {

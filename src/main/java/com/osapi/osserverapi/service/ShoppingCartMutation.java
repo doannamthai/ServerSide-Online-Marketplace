@@ -34,8 +34,7 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         ShoppingCart cart = new ShoppingCart();
         // Set the user id for the cart (optional)
         cart.setCustomer_id(customer_id);
-        // Set the cart id to the current time stamp
-        cart.setCart_id(System.currentTimeMillis());
+        //cart.setCart_id(System.currentTimeMillis());
         shoppingCartRepository.save(cart);
         return cart;
     }
@@ -164,6 +163,7 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
             // If there is no such item in the cart, skip
             if (!shoppingCart.getMapLineProduct().containsKey(purchasingProduct.getItem_id()))
                 continue;
+
             // Validate the new item count
             // If the new count is negative, skip
             if (purchasingProduct.getCount() < 0)

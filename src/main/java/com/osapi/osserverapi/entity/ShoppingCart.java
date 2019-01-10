@@ -23,7 +23,7 @@ public class ShoppingCart {
     @CollectionTable(name = "cart_items", joinColumns = @JoinColumn(name = "ShoppingCart"))
     private Map<Long, LineProduct> items = new HashMap<>();
 
-    @Id @Column(name="cart_id")
+    @Id @GeneratedValue @Column(name="cart_id")
     private Long cart_id;
 
     public ShoppingCart(){ }
