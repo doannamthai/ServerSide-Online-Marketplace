@@ -247,7 +247,9 @@ public class ShoppingCartMutation implements GraphQLMutationResolver {
         Long item_count = Long.valueOf(0);
         for (LineProduct lineProduct : cart.getItems()){
             if (lineProduct.getAdded_to_cart()){
+                // Increase the total price
                 total_price = total_price.add(lineProduct.getTotal_price());
+                // Increase the item_count
                 item_count = item_count + lineProduct.getCount();
             }
         }

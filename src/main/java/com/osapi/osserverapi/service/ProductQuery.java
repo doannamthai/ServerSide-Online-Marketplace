@@ -33,9 +33,9 @@ public class ProductQuery implements GraphQLQueryResolver {
     }
 
     /**
-     * Get the product that has given id
+     * Get the product that has the given id
      * @param item_id
-     * @return the product has given id
+     * @return the product has the given id
      */
     public Product find_product_by_id(Long item_id){
 
