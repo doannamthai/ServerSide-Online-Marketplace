@@ -86,7 +86,7 @@ You have 3 ways to test or run this project:
  - `customer_id: ID`: The id of customer belongs to this shopping cart.
  - `items:  [LineProduct]`: The list of line items.
  - `total_price: BigDecimal`: The total price of all items in the cart.
- - `item_count: Long`: The number of distinguishable items in the cart.
+ - `item_count: Long`: The number of items in the cart.
  
 #### LineProduct
  - Type: `Output`
