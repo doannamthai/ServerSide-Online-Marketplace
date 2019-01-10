@@ -91,3 +91,30 @@ You have 3 ways to test or run this project:
  - `order_date: String`: The date the order is placed.
  - `order_time: String`: The time the order is placed.
 
+## Examples
+
+ For convinience, all examples for `HTTP Requests` will be demonstrated by using `POST` method to server `https://serverside-os-api.herokuapp.com/graphql` or your localhost (if you have already cloned this repository) on `localhost:8000/graphql`
+ 
+ ### List all products and display the count: 
+ #### On GraphiQL IDE:
+ ```
+ query{
+	find_products{
+    count
+    products{
+      item_id
+      title
+      inventory_count
+      price
+    }
+  }
+}
+ ```
+#### HTTP Requests
+```
+{
+  "query": "{find_products { count products { item_id title inventory_count price } } }"
+}
+ ```
+
+
