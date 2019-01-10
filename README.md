@@ -15,10 +15,11 @@ You have 3 ways to test or run this project:
  3. Or by using `HTTP Requests` to server https://serverside-os-api.herokuapp.com/graphql.
  
  Some examples to test the API:
- 
  1. [List all products and display the count](#list-all-products-and-display-the-count)
  2. [List only available products](#list-only-available-products)
- 3. [Add items to the shopping cart](#add-items-to-shopping-cart)
+ 3. [Create a new cart](#create-a-new-cart)
+ 4. [Add items to the shopping cart](#add-items-to-shopping-cart)
+ 
 ## Entities
  *(\* indicates optional fields)*
  ### Product
@@ -171,7 +172,7 @@ mutation {
 }
  ```
  
- #### Add items to shopping cart
+ #### Add items to the exist shopping cart
 
  #### On GraphiQL IDE:
  ```
@@ -181,7 +182,7 @@ mutation {
     items {
       item_id
       title
-    	count
+    	 count
       price
       total_price
     }
